@@ -26,18 +26,25 @@ def min_subnet(
 
     # if ip_addresses is empty, raise the ValueError
     if not ip_addresses:
-        raise ValueError("There is no IP addresses in the ip_set.")
+        raise ValueError("There is no IP addresses in the ip_addresses.")
 
     # if more than one type of ip in ip addresses, 
     # raise the ValueError
     ip_types = {type(ip) for ip in ip_addresses}
     if len(ip_types) > 1:
         raise ValueError("There are addresses with \
-                         different types in the ip_set.")
+                         different types in the ip_addresses.")
     
-    # get the ip type and the max len of the subnet prefix
+    # get the ip type 
     example_ip = list(ip_addresses)[0]
     ip_class = type(example_ip)
+    
+    # if ip_addresses contains not expected type
+    # raise the ValueError
+    if ip_class not in (IPv4Address, IPv6Address):
+        raise ValueError("There is not ip object in the ip_addresses")
+    
+    # get the max len of the subnet prefix
     max_prefixlen = example_ip.max_prefixlen
 
     # get uniqe ips from ip_addresses
